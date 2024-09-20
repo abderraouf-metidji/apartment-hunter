@@ -1,188 +1,106 @@
-# Outil d'Estimation des Prix Immobiliers avec Régression Linéaire Multiple
+# Apartment Hunter - Estimation des Prix Immobiliers
 
-## Description
+## Introduction
 
-Ce projet vise à développer un outil d'estimation des prix des biens immobiliers à Madrid à partir de caractéristiques telles que la surface, le nombre de chambres, l'emplacement, etc.Ce modèle est formé à partir de données historiques d'annonces immobilières et est conçu pour effectuer des prédictions précises sur de nouveaux biens.
+Ce projet vise à prédire les prix des biens immobiliers à Madrid en se basant sur leurs caractéristiques, telles que la surface, le nombre de chambres, le nombre de salles de bain, etc. Pour ce faire, plusieurs algorithmes de régression ont été utilisés, notamment **la Forêt Aléatoire**, **le Support Vector Machines (SVM)** et **la Régression Linéaire**. Ces modèles permettent de capturer la complexité des données immobilières et de fournir des estimations précises des prix de vente.
 
-## Fonctionnalités
+## Modèles Utilisés
 
-**Entraînement du modèle** : L'outil permet d'entraîner un modèle de régression linéaire multiple en utilisant un fichier CSV contenant des données de biens immobiliers.
-**Évaluation du modèle** : L'outil fournit des métriques d'évaluation, telles que l'erreur quadratique moyenne (MSE) et le coefficient de détermination (R²), pour évaluer la performance du modèle.
-**Prédiction** : Une fois le modèle entraîné, il peut être utilisé pour estimer le prix de nouveaux biens immobiliers en fonction de leurs caractéristiques.
+### 1. Régression par Forêt Aléatoire
 
+La **Forêt Aléatoire** est un algorithme d'ensemble qui combine plusieurs arbres de décision pour améliorer la robustesse et la précision des prédictions. Chaque arbre est construit à partir d'un sous-échantillon des données d'entraînement, et la prédiction finale est obtenue en moyennant les prédictions de chaque arbre.
 
-### Structure des données
+#### Fonctionnement
+- **Bagging (Bootstrap Aggregation)** : Les sous-échantillons de données sont générés à partir de l'ensemble d'entraînement.
+- **Construction des arbres** : Chaque arbre utilise un sous-ensemble aléatoire des caractéristiques à chaque nœud.
+- **Prédiction** : Les prédictions des arbres sont moyennées pour obtenir la prédiction finale.
 
-Voici les principales colonnes présentes dans le fichier `houses_Madrid_cleaned.csv` :
+#### Avantages :
+- Modèle robuste qui réduit le risque de surapprentissage (overfitting).
+- Capture des interactions complexes entre les variables.
+  
+#### Inconvénients :
+- Plus coûteux en temps de calcul que des modèles plus simples.
+- Difficile à interpréter.
 
-- **surface** : Surface du bien immobilier en mètres carrés.
-- **chambres** : Nombre de chambres dans la propriété.
-- **quartier** : Quartier où se situe la propriété (catégorielle).
-- **prix** : Prix du bien immobilier (en euros), qui est la variable cible à prédire.
-- Autres colonnes représentant les caractéristiques spécifiques du bien.
+### 2. Régression par Support Vector Machines (SVM)
 
+Le **SVM en régression** cherche à trouver une fonction qui prédit les valeurs cibles avec un intervalle d'erreur toléré (epsilon). Cet algorithme est particulièrement performant lorsqu'il est nécessaire de modéliser des relations complexes grâce à l'utilisation de **kernels** pour transformer les données dans un espace de dimensions supérieures.
 
-Ces variables ont été utilisées comme entrée dans le modèle de régression pour prédire le prix de chaque propriété.
+#### Fonctionnement :
+- **Marge epsilon** : Les points situés à l'intérieur de la marge n'influencent pas le modèle.
+- **Kernels** : Utilisation de fonctions kernel (ex. RBF) pour gérer les relations non linéaires.
 
+#### Avantages :
+- Très flexible pour capturer des relations non linéaires.
+- Robuste face aux valeurs aberrantes.
 
-## Configuration des caractéristiques
-Dans le code, sélectionnez les caractéristiques que vous souhaitez utiliser pour entraîner le modèle.
+#### Inconvénients :
+- Le choix des paramètres (epsilon, C, kernel) peut être complexe et nécessite souvent un ajustement.
+- Long à entraîner avec de grandes quantités de données.
 
+### 3. Régression Linéaire (Ridge)
 
-```python
-caracteristiques = [
-    'sq_mt_built', 
-    'n_rooms', 
-    'n_bathrooms', 
-    'floor', 
-    'has_lift', 
-    'is_exterior', 
-    'has_parking'
-]
+La **régression linéaire** est un modèle simple mais efficace pour estimer les relations entre une variable dépendante et plusieurs variables indépendantes. Dans ce projet, nous avons utilisé la **régression Ridge**, une version régularisée de la régression linéaire, pour éviter le surapprentissage.
 
+#### Fonctionnement :
+- **Ridge Regression** : Ajoute une pénalité (régularisation L2) aux coefficients de régression pour les maintenir petits et ainsi éviter les problèmes de surapprentissage.
 
-```
+#### Avantages :
+- Simple et rapide à entraîner.
+- Facile à interpréter, avec des coefficients directs pour chaque variable.
 
-## Exécution du script
+#### Inconvénients :
+- Moins performant lorsque les relations entre les variables sont non linéaires ou complexes.
+- Peut être moins précis que les méthodes d'ensemble comme la Forêt Aléatoire.
 
+## Structure des Données
 
+Le fichier de données utilisé pour l'entraînement du modèle est `houses_Madrid_cleaned.csv`. Voici un aperçu des principales colonnes du dataset :
 
+- **`sq_mt_built`** : Surface en mètres carrés du bien immobilier.
+- **`n_rooms`** : Nombre de chambres.
+- **`n_bathrooms`** : Nombre de salles de bain.
+- **`floor`** : Étage où se situe le bien.
+- **`has_lift`** : Indicateur de la présence d’un ascenseur.
+- **`is_exterior`** : Indicateur si le bien est extérieur.
+- **`has_parking`** : Indicateur si le bien possède un parking.
+- **`buy_price`** : Prix d'achat du bien (variable cible).
 
-```python
-import pandas as pd
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.linear_model import Ridge
-from sklearn.metrics import mean_squared_error, r2_score
+Ces colonnes sont les caractéristiques d'entrée du modèle, à partir desquelles les algorithmes de régression vont prédire le prix d'un bien immobilier.
 
+## Utilisation des Algorithmes
 
+### Entraînement des Modèles
 
-df = pd.read_csv('houses_Madrid_cleaned.csv')
+Les modèles sont entraînés en utilisant un fichier CSV contenant les données des biens immobiliers à Madrid. Les étapes de prétraitement comprennent l'encodage des variables catégorielles, le traitement des valeurs manquantes et la division du dataset en ensembles d'entraînement et de test.
 
+### Évaluation des Modèles
 
-#caractéristiques pertinentes et de la cible
-caracteristiques = [
-    'sq_mt_built',
-    'n_rooms',
-    'n_bathrooms',
-    'floor',
-    'has_lift',
-    'is_exterior',
-    'has_parking'
-]
+Pour chaque modèle, des métriques d'évaluation sont calculées pour mesurer leur performance :
 
+- **MSE (Mean Squared Error)** : Mesure l'écart moyen au carré entre les valeurs prédites et réelles. Plus cette valeur est faible, mieux le modèle est ajusté.
+- **R² (Coefficient de Détermination)** : Indique la proportion de la variance des prix de vente expliquée par le modèle. Un R² proche de 1 signifie une bonne qualité de prédiction.
 
-#séparation des caractéristiques X et de la cible Y
-X = df[caracteristiques]
-y = df['buy_price']
+### Prédiction des Prix Immobiliers
 
+Après l'entraînement des modèles, il est possible d'utiliser ces derniers pour prédire le prix de nouveaux biens immobiliers. Les caractéristiques du bien sont fournies sous forme d'un dictionnaire ou DataFrame, et le modèle renvoie une estimation du prix basé sur ses caractéristiques.
 
-#gestion des valeurs manquantes
-X = X.fillna(0)
-y = y.fillna(y.mean())
+## Exemple d'Estimation
 
+Voici un exemple des caractéristiques d'un nouveau bien pour lequel le prix peut être estimé (sans le code complet) :
 
-#encodage des variables catégorielles
-X_encode = pd.get_dummies(X, drop_first=True)
+- Surface : 100 m²
+- Nombre de chambres : 3
+- Nombre de salles de bain : 2
+- Étage : 2ème
+- Présence d'un ascenseur : Oui
+- Bien extérieur : Oui
+- Parking : Non
 
+Le modèle, après avoir été entraîné, fournira une estimation du prix d'achat en fonction de ces caractéristiques.
 
-#ensembles d'entraînement et de test
-X_train, X_test, y_train, y_test = train_test_split(X_encode, y, test_size=0.2, random_state=42)
+## Conclusion
 
+Les trois algorithmes utilisés offrent une flexibilité et des performances adaptées à différents types de relations dans les données. La **Forêt Aléatoire** excelle dans les situations complexes avec beaucoup d'interactions entre les variables, tandis que le **SVM** est utile pour modéliser des relations non linéaires. Enfin, la **Régression Linéaire Ridge** fournit une approche rapide et simple pour les relations plus directes.
 
-# Définir le modèle
-model = Ridge()
-
-
-#la grille des hyperparamètres pour le coef de régul
-param_grid = {
-    'alpha': [0.1, 1.0, 10.0, 100.0]
-}
-
-
-#configuration de GridSearchCV
-grid_search = GridSearchCV(model, param_grid, cv=5, scoring='neg_mean_squared_error')
-
-
-#entrainement des modèles sur toutes les combinaisons d'hyperparamètres
-grid_search.fit(X_train, y_train)
-
-
-# le meilleur modèle
-best_model = grid_search.best_estimator_
-
-
-#affichage des meilleurs hyperparamètres
-print(f"Meilleurs hyperparamètres : {grid_search.best_params_}")
-
-
-#prédiction sur l'ensemble de test
-y_pred = best_model.predict(X_test)
-
-
-#évaluation du modèle
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-
-#résultats d'évaluation
-print(f'Mean Squared Error (MSE): {mse}')
-print(f'R-squared (R2): {r2}')
-
-
-#exemple d'utilisation du modèle pour prédire le prix d'un nouveau bien
-# création d'un dataFrame pour le nouveau bien avec les mêmes colonnes que X
-nouveau_bien_data = {
-    'sq_mt_built': [100],
-    'n_rooms': [3],
-    'n_bathrooms': [2],
-    'floor': ['2'],  
-    'has_lift': [1],
-    'is_exterior': [1],
-    'has_parking': [0]
-}
-
-
-nouveau_bien_df = pd.DataFrame(nouveau_bien_data)
-
-
-#encodage des variables catégorielles du nouveau bien
-nouveau_bien_encode = pd.get_dummies(nouveau_bien_df, drop_first=True)
-
-
-# aligment des colonnes du nouveau bien avec celles de l'ensemble d'entraînement
-nouveau_bien_encode = nouveau_bien_encode.reindex(columns=X_encode.columns, fill_value=0)
-
-
-#prédiction du prix du nouveau bien
-prix_estime = best_model.predict(nouveau_bien_encode)
-
-
-print(f"Le prix estimé du nouveau bien est : {prix_estime[0]} €")
-
-
-
- 
-```
-
-## Prédiction pour un nouveau bien immobilier
-On utilise l'outil pour estimer le prix d'un nouveau bien immobilier en fournissant ses caractéristique.
-
-
-
-```python
-nouveau_bien_data = {
-    'sq_mt_built': [120],
-    'n_rooms': [4],
-    'n_bathrooms': [2],
-    'floor': ['3'],
-    'has_lift': [1],
-    'is_exterior': [1],
-    'has_parking': [1]
-}
-
-```
-
-# Résultats de l'évaluation
-Après l'entraînement du modèle, les résultats d'évaluation sont affichés dans la console:
-
-MSE (Mean Squared Error) : Une mesure de l'écart moyen au carré entre les valeurs prédites et les valeurs réelles. Plus cette valeur est faible, plus le modèle est précis.
- R² (R-squared) : Le coefficient de détermination. Un R² proche de 1 signifie que le modèle explique bien la variance dans les données, dans notre cas, il est de 0.6817.
