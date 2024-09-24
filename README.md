@@ -23,21 +23,23 @@ La **Forêt Aléatoire** est un algorithme d'ensemble qui combine plusieurs arbr
 - Plus coûteux en temps de calcul que des modèles plus simples.
 - Difficile à interpréter.
 
-### 2. Régression par Support Vector Machines (SVM)
+### 2. Régression par XGBoost
 
-Le **SVM en régression** cherche à trouver une fonction qui prédit les valeurs cibles avec un intervalle d'erreur toléré (epsilon). Cet algorithme est particulièrement performant lorsqu'il est nécessaire de modéliser des relations complexes grâce à l'utilisation de **kernels** pour transformer les données dans un espace de dimensions supérieures.
+XGBoost (eXtreme Gradient Boosting) est un algorithme d'ensemble basé sur des arbres de décision, particulièrement performant pour les tâches de régression. Il construit séquentiellement des arbres de décision faibles pour réaliser des prédictions précises.
 
 #### Fonctionnement :
-- **Marge epsilon** : Les points situés à l'intérieur de la marge n'influencent pas le modèle.
-- **Kernels** : Utilisation de fonctions kernel (ex. RBF) pour gérer les relations non linéaires.
+- Arbres de décision faibles : Chaque arbre est construit de manière à minimiser une fonction de perte, en tenant compte des erreurs commises par les arbres précédents.
+- Boosting : Les arbres sont ajoutés de manière itérative, en mettant l'accent sur les observations mal classées.
+- Régularisation : XGBoost inclut des mécanismes de régularisation pour prévenir le sur-apprentissage.
 
 #### Avantages :
-- Très flexible pour capturer des relations non linéaires.
-- Robuste face aux valeurs aberrantes.
+- Haute performance : Souvent considéré comme l'un des algorithmes de boosting les plus performants.
+- Flexibilité : Peut gérer à la fois des problèmes de régression et de classification.
+- Traitement des données manquantes : XGBoost intègre des mécanismes pour gérer les données manquantes.
+- Parallélisation : Optimisé pour tirer parti de l'architecture multi-cœur des processeurs modernes.
 
 #### Inconvénients :
-- Le choix des paramètres (epsilon, C, kernel) peut être complexe et nécessite souvent un ajustement.
-- Long à entraîner avec de grandes quantités de données.
+- Complexité : L'algorithme peut être plus complexe à comprendre et à régler que des modèles linéaires Sensibilité au sur-apprentissage : Nécessite un réglage minutieux des hyperparamètres pour éviter le sur-apprentissage.
 
 ### 3. Régression Linéaire (Ridge)
 
