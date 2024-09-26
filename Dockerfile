@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
 
 # Commande à exécuter quand le conteneur démarre
-CMD ["python", "data/main.py"]
+CMD ["python", "main.py"]
