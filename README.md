@@ -39,7 +39,8 @@ XGBoost (eXtreme Gradient Boosting) est un algorithme d'ensemble basé sur des a
 - Parallélisation : Optimisé pour tirer parti de l'architecture multi-cœur des processeurs modernes.
 
 #### Inconvénients :
-- Complexité : L'algorithme peut être plus complexe à comprendre et à régler que des modèles linéaires Sensibilité au sur-apprentissage : Nécessite un réglage minutieux des hyperparamètres pour éviter le sur-apprentissage.
+- Complexité : L'algorithme peut être plus complexe à comprendre et à régler que des modèles linéaires
+- Sensibilité au sur-apprentissage : Nécessite un réglage minutieux des hyperparamètres pour éviter le sur-apprentissage.
 
 ### 3. Régression Linéaire (Ridge)
 
