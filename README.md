@@ -105,5 +105,4 @@ Le modèle, après avoir été entraîné, fournira une estimation du prix d'ach
 
 ## Conclusion
 
-Les trois algorithmes utilisés offrent une flexibilité et des performances adaptées à différents types de relations dans les données. La **Forêt Aléatoire** excelle dans les situations complexes avec beaucoup d'interactions entre les variables, tandis que le **SVM** est utile pour modéliser des relations non linéaires. Enfin, la **Régression Linéaire Ridge** fournit une approche rapide et simple pour les relations plus directes.
-
+En conclusion, le projet Apartment Hunter utilise divers algorithmes de régression pour estimer avec précision les prix immobiliers à Madrid en se basant sur des caractéristiques clés des biens. Des modèles tels que la Forêt Aléatoire, XGBoost et la Régression Linéaire Ridge sont employés, offrant chacun des avantages spécifiques pour capturer la complexité des données. Grâce à ces modèles, il est possible de prédire les prix de manière efficace, aidant ainsi les utilisateurs à mieux comprendre le marché immobilier madrilène.
